@@ -1,14 +1,18 @@
 import esn
 import numpy as np
 
+
+# parameters
 T = 400
 res_n = (10,)
-som_n = (1,)
-out_n = (1,)
+som_n = (3,)
+out_n = (3,)
 tau = .1 # execution timestep for the cortical rate model
 sigma = .001 # intra-reservoir weights
 eps = .1 # learning rate
 
+
+# Build the network
 # Nodes: units, tau, method
 SOM = esn.Node( som_n, 0, esn._load )
 P = esn.Node( res_n, tau, esn._reservoir )
@@ -45,11 +49,11 @@ for t in range(T):
 
     # INPUT
     # retrieve input for this timestep
-    SOM.update( np.array([t]) ) # 1
-    # SOM.update( [t,t+1,t+2] ) # 3
+    # SOM.update( np.array([t]) ) # 1
+    SOM.update( np.array([t,t+1,t+2]) ) # 3
     # print "SOM.state:",SOM.state
 
-    # print "d_P.read():", d_P.read()
+    print "d_P.read():", d_P.read()
     P.update( d_P.read() )
     # print "P.state:",P.state
 
