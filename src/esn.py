@@ -20,11 +20,6 @@ import string
 
 
 def _reservoir( self, inputs ):
-    # # if target/error is a single value
-    # # conns += self.eps * state * error
-    # # but now target/error is a vector,
-    # # and since conns are organized target-wise, 
-    # # the error has to be broadcasted for each target element
     # for i,v in enumerate(error):
     #     conns[i] += self.eps * state * v
     self.state = (1 - self.tau) * self.state + self.tau * np.tanh( inputs )
@@ -105,7 +100,7 @@ class Arc( object ):
 
         # if target/error is a single value
         # conns += self.eps * state * error
-        
+
         # but now target/error is a 1D vector,
         # and since conns are organized target-wise, they are a 2D vector, 
         # and the error has to be broadcasted for each target vector element
