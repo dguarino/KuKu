@@ -13,10 +13,6 @@ import string
 # A Strategy design is adopted to flexibly assign different update functions to different nodes
 # http://stackoverflow.com/questions/963965/how-is-this-strategy-pattern-written-in-python-the-sample-in-wikipedia
 # http://codereview.stackexchange.com/questions/20718/strategy-design-pattern-with-various-duck-type-classes
-#
-# In order to access subset of connections, slicing is in place.
-# A slice, assigned to an internal variable, is used as a view over the entire connections
-# so it is possible to read or learn only a subset of connections.
 
 
 def _reservoir( self, inputs ):
