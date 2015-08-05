@@ -16,8 +16,6 @@ import string
 
 
 def _reservoir( self, inputs ):
-    # for i,v in enumerate(error):
-    #     conns[i] += self.eps * state * v
     self.state = (1 - self.tau) * self.state + self.tau * np.tanh( inputs )
 
 def _load( self, inputs ):
