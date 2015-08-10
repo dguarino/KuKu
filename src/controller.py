@@ -16,7 +16,7 @@ class RandomController(object):
               env_out = self.environment.next_step([angle,10])
               if self.store_history:
                   self.history.append(env_out)
-              self.model.run(env_out)
+              self.model.run(numpy.append(env_out.flatten(),[angle,10]))
       
             
             

@@ -4,7 +4,7 @@ from model import *
 import numpy
 
 env = StaticImageEnvironment("../assets/image.jpg",10)
-model = SomModel(100)
+model = KuKuModel(2,100,500)
 
 rc = RandomController(env,model,store_history=True)
 rc.run(10000)
