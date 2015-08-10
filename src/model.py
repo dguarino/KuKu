@@ -2,17 +2,27 @@ import numpy
 import pylab
 import time
 
-pylab.figure()
-pylab.ion()
-pylab.draw()
-
-
 class Model(object):
 
-    def run(self,input):
-        pylab.cla()
-        pylab.imshow(input,cmap='gray',interpolation="none")
-        pylab.draw()
-        time.sleep(0.05) # delays for 5 seconds
-        
-        
+    def run(self,inp):
+        raise NotImplementedError;
+
+
+
+
+class SomModel(Model):
+      def __init__(self,input_length):
+          from minisom import MiniSom
+          self.som = MiniSom(10, 10, input_length,sigma=0.3,learning_rate=0.1,normalize=True)
+
+      def run(self,inp):
+          self.som.trian_single_instance(inp.flatten())
+ 
+class KuKuModel(Model):
+      def __init__(self,input_length):
+          from minisom import MiniSom
+          self.som = MiniSom(10, 10, input_length,sigma=0.3,learning_rate=0.1,normalize=True)
+          
+
+      def run(self,inp):
+          self.som.trian_single_instance(inp.flatten())
