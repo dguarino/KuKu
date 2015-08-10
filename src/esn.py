@@ -13,10 +13,6 @@ import string
 # A Strategy design is adopted to flexibly assign different update functions to different nodes
 # http://stackoverflow.com/questions/963965/how-is-this-strategy-pattern-written-in-python-the-sample-in-wikipedia
 # http://codereview.stackexchange.com/questions/20718/strategy-design-pattern-with-various-duck-type-classes
-#
-# In order to access subset of connections, slicing is in place.
-# A slice, assigned to an internal variable, is used as a view over the entire connections
-# so it is possible to read or learn only a subset of connections.
 
 
 def _reservoir( self, inputs ):
@@ -75,14 +71,8 @@ class Arc( object ):
         """
         conns = self.connections 
         state = self.source.state
-        # print conns.shape, state.shape
-        # print self.target.n, self.source.n
 
-        # is source is a single value
-        if self.source.n == 1:
-            self.output = conns * state
-        # if the source is a numpy array:
-        elif transpose:
+        if transpose:
             self.output = np.dot( conns.T, state )
         else:
             self.output = np.dot( conns, state )
@@ -94,10 +84,22 @@ class Arc( object ):
     def learn( self, error ):
         """
         Learns the connections based on the source state and the error due to prediction mismatch.
+
+        Implementing the predictive coding hypothesis corresponds to learning the connections wt 
+        so that the feedback from the cortex predicts the stimuli at next time step: zt ~= ut+1. 
+        We can derive an online learning scheme by the stochastic online gradient descent of the following quantity
         """
         conns = self.connections
         state = self.source.state
-        conns += self.eps * state * error
+
+        # if target/error is a single value
+        # conns += self.eps * state * error
+
+        # but now target/error is a 1D vector,
+        # and since conns are organized target-wise, they are a 2D vector, 
+        # and the error has to be broadcasted for each target vector element
+        for i,v in enumerate(error):
+            conns[i] += self.eps * state * v
 
 
 
@@ -107,9 +109,7 @@ class Arc( object ):
         The method passed is a numpy generator function.
         NOTE: the connection are always assumed to be ordered target-wise, so the first dimension of shape is the target.
         """
-
         self.connections = method( *shape ) # tuple content
-
         # apply weights
         self.connections *= self.weight
 
